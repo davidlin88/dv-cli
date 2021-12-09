@@ -27,7 +27,10 @@
     "isbinaryfile": "^4.0.8",
     "javascript-stringify": "^2.1.0",
     "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "node-fetch": "2",
     "slash": "^4.0.0",
+    "strip-ansi": "^6.0.0",
     "vue-codemod": "^0.0.5"
   }
 }
