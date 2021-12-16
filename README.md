@@ -8,6 +8,7 @@
 
 - [x] 支持选择 yarn/npm
 - [x] 支持切换源为淘宝源
+- [x] 改为 monorepo 架构
 - [ ] 支持 git commit eslint/prettier 校验
 - [ ] 支持 git commit message 格式校验
 - [ ] 升级至ESM

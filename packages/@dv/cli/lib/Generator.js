@@ -8,6 +8,9 @@ const isObject = val => val && typeof val === 'object'
 const { isBinaryFileSync } = require('isbinaryfile')
 const { runTransformation } = require('vue-codemod')
 const ConfigTransform = require('./ConfigTransform')
+const yaml = require('yaml-front-matter')
+const resolve = require('resolve')
+const { log } = require('./utils/logger.js')
 
 const defaultConfigTransforms = {
   babel: new ConfigTransform({
@@ -43,11 +46,11 @@ const reservedConfigTransforms = {
 }
 
 module.exports = class Generator {
-  constructor(pkg, context) {
+  constructor(pkg, context, files = {}) {
     this.pkg = pkg
     this.context = context
     this.configTransforms = {}
-    this.files = {}
+    this.files = files
     this.fileMiddlewares = []
     this.imports = {}
     this.rootOptions = {}
@@ -175,7 +178,7 @@ module.exports = class Generator {
   }
 
   render(source, additionalData = {}, ejsOptions = {}) {
-    // 获取调用 generator.render() 函数的文件的父目录路径
+    // 获取调用 generator.render() 函数的文件的路径
     const baseDir = extractCallDir()
     source = path.resolve(baseDir, source)
     this._injectFileMiddleware(async files => {
@@ -204,7 +207,68 @@ module.exports = class Generator {
     }
 
     const template = fs.readFileSync(name, 'utf-8')
-    return ejs.render(template, data, ejsOptions)
+
+    // 以 yaml 格式读取文件参数和主题内容
+    const parsed = yaml.loadFront(template)
+    const content = parsed.__content
+    let finalTemplate = content.trim() + `\n`
+    // TODO
+    // // 文件头声明条件渲染时，加入 if 语句
+    // if (parsed.when) {
+    //   finalTemplate = `<%_ if (${parsed.when}) { _%>` + finalTemplate + `<%_ } _%}`
+
+    //   const result = ejs.render(finalTemplate, data, ejsOptions)
+    //   if (!result) {
+    //     return ''
+    //   }
+    // }
+
+    const replaceBlockRE = /<%# REPLACE %>([^]*?)<%# END_REPLACE %>/g
+    // 配置文件读取路径
+    if (parsed.extend) {
+      let extendPath
+      if (parsed.extend.startsWith(':')) {
+        // 设置路径为相当于项目根目录，如 webpack 配置
+        extendPath = path.join(process.cwd(), parsed.extend.slice(1))
+      } else {
+        extendPath = path.isAbsolute(parsed.extend)
+          ? // 设置路径为绝对路径，如系统级配置
+            parsed.extend
+          : // TODO ?
+            resolve.sync(parsed.extend, { baseDir: path.dirname(name) })
+        log('extendPath => ')
+        log(extendPath)
+      }
+
+      finalTemplate = fs.readFileSync(extendPath, 'utf-8')
+      if (parsed.replace) {
+        // 如果需要替换
+        if (Array.isArray(parsed.replace)) {
+          // 如果有多处需要替换
+          const replaceMatch = content.match(replaceBlockRE)
+          if (replaceMatch) {
+            // 处理成需要替换的内容
+            const replaces = replaceMatch.map(m => {
+              if (parsed.keepSpace) {
+                return m.replace(replaceBlockRE, '$1')
+              }
+              return m.replace(replaceBlockRE, '$1').trim()
+            })
+
+            parsed.replace.forEach((r, i) => {
+              // 将源文件内容以正则规则替换成 __content 中对应的内容
+              finalTemplate = finalTemplate.replace(r, replaces[i])
+            })
+          }
+        } else if (parsed.keepSpace) {
+          finalTemplate = finalTemplate.replace(parsed.replace, content)
+        } else {
+          finalTemplate = finalTemplate.replace(parsed.replace, content.trim())
+        }
+      }
+    }
+
+    return ejs.render(finalTemplate, data, ejsOptions)
   }
 
   // 向 file 注入 import 语句
