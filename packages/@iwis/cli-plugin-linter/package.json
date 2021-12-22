@@ -1,6 +1,6 @@
 {
   "name": "@iwis/cli-plugin-linter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Linter plugin for iwsi-cli.",
   "main": "index.js",
   "scripts": {
