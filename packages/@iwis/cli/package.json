@@ -9,6 +9,9 @@
   "bin": {
     "iwis": "bin/cli.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -22,7 +25,6 @@
     "commander": "^8.3.0",
     "deepmerge": "^4.2.2",
     "ejs": "^3.1.6",
-    "lodash.clonedeep": "^4.5.0",
     "fs-extra": "^10.0.0",
     "globby": "^11.0.4",
     "inquirer": "^8.2.0",
@@ -30,9 +32,11 @@
     "javascript-stringify": "^2.1.0",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
+    "lodash.clonedeep": "^4.5.0",
     "node-fetch": "^2.6.1",
     "strip-ansi": "^6.0.0",
     "vue-codemod": "^0.0.5",
     "yaml-front-matter": "^4.1.1"
-  }
+  },
+  "gitHead": "1ef9dc3b973522a828c55b1eebf74a117e5e7bfa"
 }
