@@ -36,7 +36,7 @@ exports.loadOptions = () => {
       error(
         `加载保存配置错误：` +
           `~/.dvrc 可能损坏或有语法错误。` +
-          '请修复/删除后，以手动模式重新运行 dv-cli 。\n' +
+          '请修复/删除后，以手动模式重新运行 iwis-cli 。\n' +
           `${e.message}`,
       )
       exit(1)

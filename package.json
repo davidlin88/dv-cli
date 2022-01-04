@@ -1,5 +1,5 @@
 {
-  "name": "dv-cli",
+  "name": "iwis-cli",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -17,7 +17,8 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.4.1",
     "lerna": "^4.0.0",
-    "eslint": "^8.4.1"
+    "lerna-changelog": "^2.2.0"
   }
 }

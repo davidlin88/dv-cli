@@ -1,7 +1,20 @@
 {
   "npmClient": "yarn",
+  "useWorkspaces": true,
   "packages": [
     "packages/@iwis/*"
   ],
-  "version": "1.0.1"
+  "version": "1.0.1",
+  "changelog": {
+    "repo": "davidlin88/iwsi-cli",
+    "labels": {
+      "PR: New Feature": ":rocket: New Features",
+      "PR: Breaking Change": ":boom: Breaking Changes",
+      "PR: Bug Fix": ":bug: Bug Fix",
+      "PR: Documentation": ":memo: Documentation",
+      "PR: Internal": ":house: Internal",
+      "PR: Underlying Tools": ":hammer: Underlying Tools"
+    },
+    "cacheDir": ".changelog"
+  }
 }
