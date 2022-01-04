@@ -8,7 +8,8 @@
     "packages/@iwis/cli*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "davidlin88",
@@ -17,8 +18,15 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@babel/eslint-parser": "^7.16.5",
     "eslint": "^8.4.1",
+    "eslint-config-alloy": "^4.4.0",
+    "husky": ">=6",
     "lerna": "^4.0.0",
-    "lerna-changelog": "^2.2.0"
+    "lerna-changelog": "^2.2.0",
+    "lint-staged": ">=10"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   }
 }
