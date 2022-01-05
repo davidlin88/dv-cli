@@ -6,7 +6,7 @@
   ],
   "version": "1.0.1",
   "changelog": {
-    "repo": "davidlin88/iwsi-cli",
+    "repo": "davidlin88/iwis-cli",
     "labels": {
       "PR: New Feature": ":rocket: New Features",
       "PR: Breaking Change": ":boom: Breaking Changes",
