@@ -4,7 +4,7 @@
   "packages": [
     "packages/@iwis/*"
   ],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "changelog": {
     "repo": "davidlin88/iwis-cli",
     "labels": {
