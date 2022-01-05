@@ -5,6 +5,16 @@
     "packages/@iwis/*"
   ],
   "version": "1.0.2",
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "*.md"
+      ],
+      "verifyAccess": false,
+      "verifyRegistry": false,
+      "message": "chore(release): publish"
+    }
+  },
   "changelog": {
     "repo": "davidlin88/iwis-cli",
     "labels": {
