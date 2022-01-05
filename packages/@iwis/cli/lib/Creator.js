@@ -1,5 +1,4 @@
 const { hasYarn } = require('./utils/env')
-const { log } = require('./utils/logger')
 const isManualMode = answers => answers.preset === '__manual__'
 
 const { loadOptions, defaults } = require('./utils/options')
@@ -77,16 +76,16 @@ class Creator {
 
     const savedOptions = loadOptions()
     if (!savedOptions.packageManager) {
-      const packageManagerChoices = []
+      const PackageManagerChoices = []
       if (hasYarn()) {
-        packageManagerChoices.push({
+        PackageManagerChoices.push({
           name: 'Use Yarn',
           value: 'yarn',
           short: 'Yarn',
         })
       }
 
-      packageManagerChoices.push({
+      PackageManagerChoices.push({
         name: 'Use NPM',
         value: 'npm',
         short: 'NPM',
@@ -96,7 +95,7 @@ class Creator {
         name: 'packageManager',
         type: 'list',
         message: 'Pick the package manager to use when installing dependencies:',
-        choices: packageManagerChoices,
+        choices: PackageManagerChoices,
       })
     }
 

@@ -8,7 +8,7 @@ const fs = require('fs-extra')
 const chalk = require('chalk')
 const { saveOptions, savePreset, rcPath } = require('./utils/options')
 const { log } = require('./utils/logger')
-const packageManager = require('./PackageManager')
+const PackageManager = require('./PackageManager')
 const writeFileTree = require('./utils/writeFileTree')
 
 async function create(name) {
@@ -70,7 +70,7 @@ async function create(name) {
     log(`配置 ${chalk.yellow(answers.saveName)} 保存在了 ${chalk.yellow(rcPath)}`)
   }
 
-  const pm = new packageManager(targetDir, answers.packageManager)
+  const pm = new PackageManager(targetDir, answers.packageManager)
 
   // package.json 文件内容
   const pkg = {

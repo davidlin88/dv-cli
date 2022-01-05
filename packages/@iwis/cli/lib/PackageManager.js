@@ -15,7 +15,7 @@ const PACKAGE_MANAGER_CONFIG = {
   },
 }
 
-class packageManager {
+class PackageManager {
   constructor(context, packageManager) {
     this.context = context
     this._registries = {}
@@ -77,4 +77,4 @@ class packageManager {
   }
 }
 
-module.exports = packageManager
+module.exports = PackageManager
