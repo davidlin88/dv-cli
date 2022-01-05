@@ -167,7 +167,7 @@ module.exports = class Generator {
   extendPackage(fields) {
     const pkg = this.pkg
     for (const key in fields) {
-      if (Object.prototype.hasPropertyOf.call(fields, key)) {
+      if (Object.prototype.hasOwnProperty.call(fields, key)) {
         const value = fields[key]
         const existing = pkg[key]
         if (isObject(value) && (key === 'dependencies' || key === 'devDependencies' || key === 'scripts')) {
