@@ -18,8 +18,9 @@ const ping = async registry => {
 let checked
 let result
 module.exports = async function shouldUseTaobao(command) {
+  let newCommand = command
   if (!command) {
-    command = hasYarn() ? 'yarn' : 'npm'
+    newCommand = hasYarn() ? 'yarn' : 'npm'
   }
 
   // 确保只调用一次
@@ -29,7 +30,8 @@ module.exports = async function shouldUseTaobao(command) {
   // 获取已保存的镜像配置
   const saved = loadOptions().useTaobaoRegistry
   if (typeof saved === 'boolean') {
-    return (result = saved)
+    result = saved
+    return result
   }
 
   const save = val => {
@@ -42,17 +44,17 @@ module.exports = async function shouldUseTaobao(command) {
   let userCurrent
 
   try {
-    userCurrent = (await execa(command, ['config', 'get', 'registry'])).stdout
+    userCurrent = (await execa(newCommand, ['config', 'get', 'registry'])).stdout
   } catch (registryError) {
     try {
       // yarn 2 用 npmRegistryServer 替代了 registry
-      userCurrent = (await execa(command, ['config', 'get', 'npmRegistryServer'])).stdout
+      userCurrent = (await execa(newCommand, ['config', 'get', 'npmRegistryServer'])).stdout
     } catch (npmRegistryServer) {
       return save(false)
     }
   }
 
-  const defaultRegistry = registries[command]
+  const defaultRegistry = registries[newCommand]
   if (removeSlash(userCurrent) !== removeSlash(defaultRegistry)) {
     // 用户自定义了镜像源，尊重它
     return save(false)
@@ -80,14 +82,14 @@ module.exports = async function shouldUseTaobao(command) {
       name: 'useTaobapRegistry',
       type: 'confirm',
       message: chalk.yellow(
-        `您连接 ${command} 的默认源看起来较慢。\n` +
+        `您连接 ${newCommand} 的默认源看起来较慢。\n` +
           `是否切换为更快的源用于安装依赖？（ ${chalk.cyan(registries.taobao)} ）`,
       ),
     },
   ])
 
   if (useTaobaoRegistry) {
-    await execa(command, ['config', 'set', 'registry', registries.taobao])
+    await execa(newCommand, ['config', 'set', 'registry', registries.taobao])
   }
 
   return save(useTaobaoRegistry)

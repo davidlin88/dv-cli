@@ -1,5 +1,9 @@
 const stringifyJS = require('./stringifyJS')
 const merge = require('deepmerge')
+const mergeArrayWithDedupe = (a, b) => Array.from(new Set([...a, ...b]))
+const mergeOptions = {
+  arrayMerge: mergeArrayWithDedupe,
+}
 
 const transformJS = {
   read: ({ filename, context }) => {
@@ -28,12 +32,13 @@ const transformYAML = {
 const transformLines = {
   read: ({ source }) => source.split('\n'),
   write: ({ value, existing }) => {
+    let newValue
     if (existing) {
-      value = existing.concat(value)
+      newValue = existing.concat(value)
       // 去重
-      value = value.filter((item, index) => value.indexOf(item) === index)
+      newValue = value.filter((item, index) => value.indexOf(item) === index)
     }
-    return value.join('\n')
+    return newValue.join('\n')
   },
 }
 

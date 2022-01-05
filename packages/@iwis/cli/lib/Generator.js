@@ -167,12 +167,14 @@ module.exports = class Generator {
   extendPackage(fields) {
     const pkg = this.pkg
     for (const key in fields) {
-      const value = fields[key]
-      const existing = pkg[key]
-      if (isObject(value) && (key === 'dependencies' || key === 'devDependencies' || key === 'scripts')) {
-        pkg[key] = Object.assign(existing || {}, value)
-      } else {
-        pkg[key] = value
+      if (Object.prototype.hasPropertyOf.call(fields, key)) {
+        const value = fields[key]
+        const existing = pkg[key]
+        if (isObject(value) && (key === 'dependencies' || key === 'devDependencies' || key === 'scripts')) {
+          pkg[key] = Object.assign(existing || {}, value)
+        } else {
+          pkg[key] = value
+        }
       }
     }
   }
@@ -180,15 +182,15 @@ module.exports = class Generator {
   render(source, additionalData = {}, ejsOptions = {}) {
     // 获取调用 generator.render() 函数的文件的路径
     const baseDir = extractCallDir()
-    source = path.resolve(baseDir, source)
+    const newSource = path.resolve(baseDir, source)
     this._injectFileMiddleware(async files => {
       const data = this._resolveData(additionalData)
       // TODO 为什么不放文件开头声明
       const globby = require('globby')
 
-      const _files = await globby(['**/*'], { cwd: source, dot: true })
+      const _files = await globby(['**/*'], { cwd: newSource, dot: true })
       for (const rawPath of _files) {
-        const sourcePath = path.resolve(source, rawPath)
+        const sourcePath = path.resolve(newSource, rawPath)
 
         const content = this.renderFile(sourcePath, data, ejsOptions)
         // 当内容是二进制流或非空时，设置文件内容

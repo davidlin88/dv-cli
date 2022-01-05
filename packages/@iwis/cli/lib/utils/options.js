@@ -1,6 +1,6 @@
 const fs = require('fs-extra')
 const cloneDeep = require('lodash.clonedeep')
-const { error, log } = require('./logger')
+const { error } = require('./logger')
 const { getRcPath } = require('./rcPath')
 const exit = require('./exit')
 
@@ -57,14 +57,14 @@ exports.saveOptions = toSave => {
   try {
     fs.writeFileSync(rcPath, JSON.stringify(options, null, 2))
   } catch (e) {
-    error(`保存配置时发生错误：` + `请确保有 ${rcPath} 的写入权限。\n` + `${e.message}`)
+    error(`保存配置时发生错误：请确保有 ${rcPath} 的写入权限。\n${e.message}`)
   }
 }
 
 exports.savePreset = (name, preset) => {
-  preset = filter(preset)
+  const newPreset = filter(preset)
   const presets = cloneDeep(exports.loadOptions().presets || {})
-  presets[name] = preset
+  presets[name] = newPreset
 
   exports.saveOptions({ presets })
 }

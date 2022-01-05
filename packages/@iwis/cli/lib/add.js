@@ -3,7 +3,7 @@ const clearConsole = require('./utils/clearConsole')
 const inquirer = require('inquirer')
 const Generator = require('./Generator')
 const readFiles = require('./utils/readFiles')
-const packageManager = require('./PackageManager')
+const PackageManager = require('./PackageManager')
 
 async function add(name) {
   const targetDir = process.cwd()
@@ -21,7 +21,7 @@ async function add(name) {
   }
 
   const generator = new Generator(pkg, targetDir, await readFiles(targetDir))
-  const pm = new packageManager(targetDir, answers.packageManager)
+  const pm = new PackageManager(targetDir, answers.packageManager)
   require(`@iwis/cli-plugin-${name}/generator`)(generator, answers)
 
   await generator.generate()

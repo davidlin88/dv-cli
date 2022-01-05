@@ -1,9 +1,9 @@
 const execa = require('execa')
 
-module.exports = function (command, arguments, cwd) {
-  return new Promise(async (resolve, reject) => {
+module.exports = function (command, args, cwd) {
+  return new Promise((resolve, reject) => {
     try {
-      const child = execa(command, arguments, {
+      const child = execa(command, args, {
         cwd,
         stdio: ['inherit', 'pipe', 'inherit'],
       })

@@ -10,9 +10,11 @@ exports.hasYarn = () => {
   // 尝试执行 yarn 命令，报错就是没有 yarn
   try {
     execSync('yarn --version', { stdio: 'ignore' })
-    return (_hasYarn = true)
+    _hasYarn = true
+    return _hasYarn
   } catch (error) {
-    return (_hasYarn = false)
+    _hasYarn = false
+    return _hasYarn
   }
 }
 
